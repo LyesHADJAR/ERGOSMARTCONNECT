@@ -362,6 +362,43 @@
       font-size: 14px;
     }
 
+    .smart-signup-btn {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 18px !important;
+      border-radius: 30px;
+      text-decoration: none;
+      color: #155234;
+      font-weight: 800;
+      font-size: 13px !important;
+      background: #ffffff;
+      border: 1.5px solid rgba(46, 139, 87, 0.28);
+      box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .smart-signup-btn:hover {
+      background: rgba(46, 139, 87, 0.08);
+      color: #0f3d27;
+      border-color: rgba(46, 139, 87, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(46, 139, 87, 0.16);
+    }
+
+    .smart-signup-btn i {
+      font-size: 14px;
+    }
+
+    @media (max-width: 767.98px) {
+      .smart-header-right .smart-login-btn,
+      .smart-header-right .smart-signup-btn {
+        display: none !important;
+      }
+    }
+
     /* ===== MENU DÉROULANT "PLUS" ===== */
     .nav-dropdown {
       position: relative;
@@ -906,6 +943,11 @@
         min-width: auto !important;
         padding: 10px 14px !important;
         font-size: 13px !important;
+      }
+
+      .smart-signup-btn {
+        padding: 9px 12px !important;
+        font-size: 12px !important;
       }
 
       .header-container {
@@ -6330,6 +6372,11 @@ body[dir="rtl"] .frame-right {
         </div>
 
         <!-- BOUTON "SE CONNECTER" -->
+        <a href="{% url 'inscription' %}" class="smart-signup-btn d-none d-md-flex">
+          <i class="bi bi-person-plus"></i>
+          <span data-i18n="button.createAccount">Créer un compte</span>
+        </a>
+
         <a href="{% url 'login' %}" class="smart-login-btn d-none d-md-flex">
           <i class="bi bi-person-circle"></i>
           <span class="login-text" data-i18n="button.login">Se connecter</span>
@@ -6407,6 +6454,11 @@ body[dir="rtl"] .frame-right {
 </div>
   
   <!-- Bouton "Se connecter" dans le menu mobile -->
+  <a href="{% url 'inscription' %}" class="smart-signup-btn mobile-login-btn">
+    <i class="bi bi-person-plus"></i>
+    <span data-i18n="button.createAccount">Créer un compte</span>
+  </a>
+
   <a href="{% url 'login' %}" class="smart-login-btn mobile-login-btn">
     <i class="bi bi-person-circle"></i>
     <span class="login-text" data-i18n="button.login">Se connecter</span>
@@ -10732,6 +10784,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
           // Boutons
           'button.login': 'Se connecter',
+          'button.createAccount': 'Créer un compte',
           'button.discover': 'Découvrir la plateforme',
           'button.sendMessage': 'Envoyer le message',
           
@@ -10883,6 +10936,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
           // Buttons
           'button.login': 'Log In',
+          'button.createAccount': 'Create Account',
           'button.discover': 'Discover the Platform',
           'button.sendMessage': 'Send Message',
           
@@ -11034,6 +11088,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
           // Buttons
           'button.login': 'تسجيل الدخول',
+          'button.createAccount': 'إنشاء حساب',
           'button.discover': 'اكتشف المنصة',
           'button.sendMessage': 'إرسال الرسالة',
           
