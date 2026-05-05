@@ -1,9 +1,10 @@
 from email.mime import message
-from pyexpat.errors import messages
+from functools import wraps
 from urllib import request
 from datetime import timedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -38,6 +39,19 @@ from django.contrib.auth.decorators import login_required
 from .ai import generate_intervention_plan, analyze_patient_data
 
 logger = logging.getLogger(__name__)
+
+
+def ergo_required(view_func):
+    """Cabinet ergothérapeute uniquement (role ergo). Les patients sont renvoyés vers leur espace."""
+
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if getattr(request.user, 'role', None) != 'ergo':
+            return redirect('patient_dashboard')
+
+        return view_func(request, *args, **kwargs)
+
+    return _wrapped
 
 
 def _patient_from_ai_payload(patient_data):
@@ -79,6 +93,7 @@ def _priority_from_ai_text(text):
 #  → bouton "📋 Générer le plan d'intervention" du formulaire
 # ═══════════════════════════════════════════════════════════════════
 @login_required
+@ergo_required
 @require_POST
 def generate_plan_view(request):
     """
@@ -165,6 +180,7 @@ def generate_plan_view(request):
 #  ANALYSE RAPIDE (bouton "🤖 Analyser avec IA")
 # ═══════════════════════════════════════════════════════════════════
 @login_required
+@ergo_required
 @require_POST
 def analyze_view(request):
     """
@@ -265,10 +281,13 @@ def index(request):
 def page_connexion(request):
     return render(request, 'login.html') 
 
+@login_required
+@ergo_required
 def inscr(request):
-    return render(request, 'inscription.html') 
+    return render(request, 'inscription.html')
 
 @login_required
+@ergo_required
 def ergotherapeute(request):
     # Récupérer la langue de l'utilisateur
     lang = 'fr'
@@ -498,15 +517,11 @@ def contact_view(request):
     return render(request, "index.html", {
         "success_message": success_message,
         "error_message": error_message
-    })    
-from django.utils import timezone
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
+    })
 
 
-
-
+@login_required
+@ergo_required
 def register_patient(request):
 
     message = ""
@@ -519,7 +534,7 @@ def register_patient(request):
 
         nom = request.POST.get("last_name")
         prenom = request.POST.get("first_name")
-        email = request.POST.get("email")
+        email = (request.POST.get("email") or "").strip()
 
         if not username:
             message = "Le nom d'utilisateur doit être défini"
@@ -537,6 +552,10 @@ def register_patient(request):
             message = "Nom d'utilisateur déjà utilisé"
             return render(request, "inscription.html", {"message": message})
 
+        if email and User.objects.filter(email__iexact=email).exists():
+            message = "Cette adresse e-mail est déjà utilisée"
+            return render(request, "inscription.html", {"message": message})
+
         # Création utilisateur
         user = User.objects.create_user(
             username=username,
@@ -551,6 +570,8 @@ def register_patient(request):
         patient_profile = PatientProfile.objects.create(
 
             user=user,
+
+            created_by=request.user,
 
             date_naissance=request.POST.get("birth_date"),
             sexe=request.POST.get("gender"),
@@ -594,18 +615,23 @@ def register_patient(request):
         )
 
         tracer_action(
-            utilisateur=user,
+            utilisateur=request.user,
             patient=patient_profile,
             type_action='patient',
             action='Patient créé',
             details={
                 'nom': user.nom,
                 'prenom': user.prenom,
-                'email': user.email
+                'email': user.email,
+                'username': username,
             }
         )
-        
-        login(request, user)
+
+        messages.success(
+            request,
+            f'Compte patient créé : identifiant « {username} ». '
+            "Communiquez le mot de passe au patient pour qu'il se connecte depuis la page de connexion."
+        )
 
         return redirect("patients")
 
@@ -613,6 +639,7 @@ def register_patient(request):
 
 # 
 @login_required
+@ergo_required
 def patients(request):
     patients = PatientProfile.objects.select_related("user").all()
 
@@ -663,6 +690,7 @@ from datetime import date, timedelta
 from .models import PatientProfile, Evaluation, DonneesCliniques, BilanMusculaire, BilanArticulaire, BilanDouleur, BilanTrophique, BilanSensitif, BilanPrehension, BilanDexterite, BilanEndurance, ProgrammeExercice, Exercice, ResultatExercice, ProgressionPatient, Message, RDV, Ressource, IA_Recommendation, HistoriqueAction, Recompense, JournalPatient
 
 @login_required
+@ergo_required
 def Dossiers(request):
     tracer_action(
             utilisateur=request.user,
@@ -1123,6 +1151,7 @@ def Dossiers(request):
     
 from django.db.models import Avg, Max
 @login_required
+@ergo_required
 def Programmes(request):
     programmes = ProgrammeExercice.objects.select_related('patient__user').filter(patient__isnull=False)
 
@@ -1946,6 +1975,7 @@ def Programmes(request):
     
     return render(request, 'Programmes.html', context)
 @login_required
+@ergo_required
 def ajouter_exercice_bibliotheque_ajax(request):
     """Version AJAX pour ajouter un exercice sans recharger la page"""
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -2002,6 +2032,7 @@ from .models import AnalyseIA, HistoriqueAnalyseIA
 from Dashboard.models import PatientProfile
 
 @login_required
+@ergo_required
 def page_ia(request):
     # Récupérer l'ID de recommandation si présent dans l'URL
     reco_id = request.GET.get('reco_id')
@@ -2060,6 +2091,7 @@ def page_ia(request):
     return render(request, 'IA.html', context)
 
 @login_required
+@ergo_required
 def generer_analyse_ia(request, patient_id):
     from django.utils import timezone
     import random
@@ -2102,6 +2134,7 @@ def generer_analyse_ia(request, patient_id):
     return redirect('page_ia')
 
 @login_required
+@ergo_required
 def IA(request):
     """Page IA - Affiche les analyses et recommandations"""
     from .models import AnalyseIA
@@ -2188,6 +2221,7 @@ def IA(request):
     return render(request, 'IA.html', context)
 
 @login_required
+@ergo_required
 def valider_analyse_ia(request, analyse_id):
     """Valider une analyse IA (marquer comme traitée)"""
     analyse = get_object_or_404(AnalyseIA, id=analyse_id)
@@ -2554,6 +2588,7 @@ def api_action_analyse_ia(request, analyse_id):
 
     return JsonResponse({'success': False, 'error': 'Action invalide'}, status=400)
 @login_required
+@ergo_required
 def Agenda(request):
     patients = PatientProfile.objects.select_related('user').all().order_by('user__prenom', 'user__nom')
 
@@ -2758,6 +2793,8 @@ def agenda_rdv_cancel(request, rdv_id):
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
+@login_required
+@ergo_required
 def Messages(request):
     """Page de gestion des Messages"""
     return render(request, 'Messages.html')  
@@ -2785,6 +2822,7 @@ def agenda_rdv_delete(request, rdv_id):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 @login_required
+@ergo_required
 def Ressources(request):
     ressources = Ressource.objects.all().order_by('-date_creation')
 
@@ -3248,6 +3286,7 @@ from django.utils.dateparse import parse_date
 
 from datetime import date
 @login_required
+@ergo_required
 def Historique(request):
     type_action = request.GET.get('type_action', 'all')
     patient_id = request.GET.get('patient_id', 'all')
@@ -3314,6 +3353,7 @@ def Historique(request):
     return render(request, 'Historique.html', context)
 
 @login_required
+@ergo_required
 def patient_detail(request, id):
     patient = get_object_or_404(PatientProfile, id=id)
     tracer_action(
@@ -4342,6 +4382,7 @@ from django.contrib import messages
 from .models import PatientProfile
 
 @login_required
+@ergo_required
 def modifier_patient(request, patient_id):
     patient = get_object_or_404(PatientProfile, id=patient_id)
     user = patient.user
@@ -4383,6 +4424,8 @@ def modifier_patient(request, patient_id):
 import io
 
 @csrf_exempt
+@login_required
+@ergo_required
 def generer_pdf_natif(request):
     """Génère un PDF très organisé et décoré"""
     if request.method == 'POST':
@@ -4931,6 +4974,7 @@ def generer_pdf_natif(request):
 import json
 
 @login_required
+@ergo_required
 @csrf_exempt
 def envoyer_message_patient(request):
     """Envoyer un message à un patient depuis la page patients"""
@@ -4997,6 +5041,7 @@ from .models import Message
 
 
 @login_required
+@ergo_required
 def messages_page(request):
     return render(request, "Messages.html")
 
@@ -5908,8 +5953,9 @@ def supprimer_dossier(request, id):
     return redirect('Dossiers')
 
 
-@require_POST
 @login_required
+@ergo_required
+@require_POST
 def supprimer_patient(request, patient_id):
     try:
         patient = PatientProfile.objects.get(id=patient_id)

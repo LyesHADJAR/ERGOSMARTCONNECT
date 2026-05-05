@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inscription | SmartWrist Rehab</title>
+  <title>Nouveau patient | SmartWrist Rehab</title>
 
   <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -1118,12 +1118,12 @@
 
     <div class="hero">
       <div>
-        <h1 data-i18n="h1"><i class="bi bi-shield-lock me-2"></i>Créer votre compte patient</h1>
-        <p data-i18n="sub"> Un premier pas vers une récupération plus sereine de votre poignet</p>
+        <h1 data-i18n="h1"><i class="bi bi-shield-lock me-2"></i>Créer un compte patient (cabinet)</h1>
+        <p data-i18n="sub"> Saisissez les informations recueillies avec le patient, puis choisissez identifiant et mot de passe qu'il utilisera pour se connecter.</p>
 
         <div class="hint">
           <i class="bi bi-clock-history"></i>
-          <span data-i18n="timeHint">Prenez le temps qu'il vous faut, le parcours s'adapte à vous</span>
+          <span data-i18n="timeHint">Après enregistrement, retrouvez le dossier dans la liste des patients ; remettez au patient ses identifiants de connexion.</span>
         </div>
 
         <div class="req-note" data-i18n="reqNote">Les champs marqués d'un astérisque (*) sont obligatoires.</div>
@@ -1888,9 +1888,9 @@ fractureDate?.addEventListener("change", () => updateSinceText(currentLang));
 const dict = {
   fr:{
     tagline:"Réapprendre à faire, agir et participer à l’ère numérique",
-    h1:"Créer votre compte patient",
-    sub:"Un premier pas vers une récupération plus sereine de votre poignet",
-    timeHint:"Prenez le temps qu'il vous faut, le parcours s'adapte à vous",
+    h1:"Créer un compte patient (cabinet)",
+    sub:"Saisissez les informations recueillies avec le patient, puis choisissez identifiant et mot de passe qu'il utilisera pour se connecter.",
+    timeHint:"Après enregistrement, retrouvez le dossier dans la liste des patients ; remettez au patient ses identifiants de connexion.",
     reqNote:"Les champs marqués d'un astérisque (*) sont obligatoires.",
     privacyShort:"Vos données sont confidentielles et utilisées uniquement pour votre suivi.",
     step1:"Identité", step2:"Fracture", step3:"Objectifs", step4:"Compte",
@@ -1939,8 +1939,8 @@ const dict = {
     activities:"Activités importantes avant la fracture (optionnel)",
     goal:"Objectif principal de rééducation *",
     goalHelp:"Choisissez l'objectif le plus important pour vous. Les autres seront travaillés ensuite.",
-    sec4:"Compte & sécurité",
-    sec4sub:"Créez vos identifiants. Vous pourrez vous connecter en toute sécurité.",
+    sec4:"Compte patient",
+    sec4sub:"Choisissez identifiant et mot de passe à communiquer au patient pour la page de connexion.",
     username:"Nom d'utilisateur *",
     unique:"Doit être unique.",
     password:"Mot de passe *",
@@ -1953,7 +1953,7 @@ const dict = {
     cgu:"J'accepte les Conditions Générales d'Utilisation *",
     privacy:"Je consens au traitement de mes données de santé (confidentialité) *",
     tips:"Je souhaite recevoir des rappels et conseils (email/SMS) (optionnel)",
-    submit:"S'enregistrer",
+    submit:"Enregistrer le patient",
     legal:"Mentions légales",
     consentGoogle:"Consentement recueilli auprès du patient via un formulaire Google",
 
@@ -2021,9 +2021,9 @@ const dict = {
 
   en:{
     tagline:"Relearning to do in the digital era",
-    h1:"Create your patient account",
-    sub:"A first step toward a calmer recovery of your wrist",
-    timeHint:"Take the time you need, the journey adapts to you",
+    h1:"Create a patient account",
+    sub:"Enter the information you collected with the patient, then set the username and password they will use to sign in.",
+    timeHint:"After saving, open the record from the patient list and give the patient their login details.",
     reqNote:"Fields marked with an asterisk (*) are required.",
     privacyShort:"Your data is confidential and used only for your follow-up.",
     step1:"Identity", step2:"Fracture", step3:"Goals", step4:"Account",
@@ -2072,8 +2072,8 @@ const dict = {
     activities:"Important activities before the fracture (optional)",
     goal:"Main rehabilitation goal *",
     goalHelp:"Choose the most important goal. Others will be addressed later.",
-    sec4:"Account & security",
-    sec4sub:"Create your credentials to sign in securely.",
+    sec4:"Patient account",
+    sec4sub:"Set the username and password you will give the patient for the login page.",
     username:"Username *",
     unique:"Must be unique.",
     password:"Password *",
@@ -2086,7 +2086,7 @@ const dict = {
     cgu:"I accept the Terms of Use *",
     privacy:"I consent to processing my health data (privacy) *",
     tips:"I want reminders and tips (email/SMS) (optional)",
-    submit:"Register",
+    submit:"Save patient",
     legal:"Legal notice",
     consentGoogle:"Consent collected from the patient via a Google form",
 
@@ -2150,9 +2150,9 @@ const dict = {
 
   ar:{
     tagline:"إعادة التعلّم في العصر الرقمي",
-    h1:"إنشاء حساب المريض",
-    sub:"خطوة أولى نحو تعافٍ أكثر هدوءًا لمعصمك",
-    timeHint:"خذ الوقت الذي تحتاجه، المسار يتكيف معك",
+    h1:"إنشاء حساب مريض (العيادة)",
+    sub:"أدخل المعلومات التي جمعتها مع المريض، ثم اختر اسماً مستخدماً وكلمة مرور يستخدمها للدخول.",
+    timeHint:"بعد الحفظ يمكنك فتح الملف من قائمة المرضى وتسليم المريض بيانات الدخول.",
     reqNote:"الحقول المعلّمة بنجمة (*) إلزامية.",
     privacyShort:"بياناتك سرّية وتُستخدم فقط للمتابعة.",
     step1:"الهوية", step2:"الكسر", step3:"الأهداف", step4:"الحساب",
@@ -2201,8 +2201,8 @@ const dict = {
     activities:"أنشطة مهمة قبل الكسر (اختياري)",
     goal:"الهدف الرئيسي للتأهيل *",
     goalHelp:"اختر الهدف الأهم لك. سيتم العمل على البقية لاحقًا.",
-    sec4:"الحساب والأمان",
-    sec4sub:"أنشئ بيانات الدخول للدخول بأمان.",
+    sec4:"حساب المريض",
+    sec4sub:"اختر اسم المستخدم وكلمة المرور لتسليمها للمريض لصفحة الدخول.",
     username:"اسم المستخدم *",
     unique:"يجب أن يكون فريدًا.",
     password:"كلمة المرور *",
@@ -2215,7 +2215,7 @@ const dict = {
     cgu:"أوافق على شروط الاستخدام *",
     privacy:"أوافق على معالجة بياناتي الصحية (الخصوصية) *",
     tips:"أرغب في تذكيرات ونصائح (بريد/رسائل) (اختياري)",
-    submit:"تسجيل",
+    submit:"حفظ المريض",
     legal:"إشعار قانوني",
     consentGoogle:"تم جمع الموافقة من المريض عبر نموذج Google",
 

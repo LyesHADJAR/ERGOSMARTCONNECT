@@ -900,6 +900,13 @@
 </header>
 
 <main class="container my-5 main-wrap">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{% if message.level_tag == 'error' %}danger{% else %}{{ message.level_tag }}{% endif %}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
   <section class="workspace">
     <aside class="left-panel">
       <div class="panel-top">

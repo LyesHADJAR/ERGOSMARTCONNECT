@@ -853,6 +853,9 @@
 <div class="subtitle" data-i18n="login.subtitle">
 Accédez à votre suivi ergothérapique
 </div>
+<p class="text-muted small mb-3 px-1" style="line-height:1.45;" data-i18n="login.invite_only">
+Les accès sont créés par votre ergothérapeute : connectez-vous avec l’identifiant et le mot de passe qu’on vous a communiqués.
+</p>
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
@@ -934,14 +937,6 @@ Mot de passe oublié ?
 
 </form>
 
-<div class="signup-panel">
-<p data-i18n="login.no_account">Vous n'avez pas encore de compte patient ?</p>
-<a class="btn-signup" href="{% url 'inscription' %}">
-<i class="bi bi-person-plus"></i>
-<span data-i18n="login.create_account">Créer un compte</span>
-</a>
-</div>
-
 <div class="text-center mt-4" style="font-weight:900;color:#111827;opacity:.65;">
 © <span id="year">2024</span> SmartWrist Rehab
 </div>
@@ -965,8 +960,9 @@ fr:{
 "login.forgot":"Mot de passe oublié ?",
 "login.signin":"Se connecter",
 "login.temp_code":"Connexion par code temporaire",
-"login.no_account":"Vous n'avez pas encore de compte patient ?",
-"login.create_account":"Créer un compte",
+"login.invite_only":"Les accès sont créés par votre ergothérapeute : connectez-vous avec l’identifiant et le mot de passe qu’on vous a communiqués.",
+"login.no_account":"",
+"login.create_account":"",
 "brand.subtitle":"Réapprendre à faire, agir et participer à l’ère numérique"
 },
 
@@ -981,8 +977,9 @@ en:{
 "login.forgot":"Forgot password?",
 "login.signin":"Sign in",
 "login.temp_code":"Login with temporary code",
-"login.no_account":"Don't have a patient account yet?",
-"login.create_account":"Create an account",
+"login.invite_only":"Access is created by your occupational therapist: sign in with the username and password you were given.",
+"login.no_account":"",
+"login.create_account":"",
 "brand.subtitle":"Relearning to do, in the digital age"
 },
 
@@ -997,8 +994,9 @@ ar:{
 "login.forgot":"نسيت كلمة المرور؟",
 "login.signin":"تسجيل الدخول",
 "login.temp_code":"تسجيل الدخول باستخدام رمز مؤقت",
-"login.no_account":"ليس لديك حساب مريض بعد؟",
-"login.create_account":"إنشاء حساب",
+"login.invite_only":"يتم إنشاء الوصول من قبل المعالج المهني: سجّل الدخول باستخدام اسم المستخدم وكلمة المرور اللذين تم تسليمهما لك.",
+"login.no_account":"",
+"login.create_account":"",
 "brand.subtitle":"إعادة تعلم كيفية العمل في العصر الرقمي"
 }
 

@@ -24,6 +24,24 @@ class User(AbstractUser):
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient_profile')
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='patients_created',
+        limit_choices_to={'role': 'ergo'},
+        verbose_name='Créé par',
+    )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='patients_created',
+        limit_choices_to={'role': 'ergo'},
+        verbose_name='Créé par',
+    )
     date_naissance = models.DateField()
     sexe = models.CharField(max_length=10, choices=[('F', 'Femme'), ('H', 'Homme')])
     telephone = models.CharField(max_length=20)
