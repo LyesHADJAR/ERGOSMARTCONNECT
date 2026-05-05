@@ -167,8 +167,10 @@ STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
+    # Non-manifest: avoids 500 at runtime when {% static %} references files missing from
+    # collectstatic output (manifest strict mode would raise ValueError on ergotherapeute, etc.).
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 

@@ -932,25 +932,6 @@ class Recompense(models.Model):
         return f"{self.patient.user.nom} - {self.nom}"
 
 
-class DefiPatient(models.Model):
-    """Défis pour motiver le patient"""
-    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='defis')
-    nom = models.CharField(max_length=200, verbose_name="Nom du défi")
-    description = models.TextField(blank=True, verbose_name="Description")
-    objectif = models.IntegerField(verbose_name="Objectif")
-    progression = models.IntegerField(default=0, verbose_name="Progression actuelle")
-    termine = models.BooleanField(default=False, verbose_name="Terminé")
-    date_debut = models.DateField(auto_now_add=True, verbose_name="Date de début")
-    date_fin = models.DateField(blank=True, null=True, verbose_name="Date de fin")
-    
-    class Meta:
-        verbose_name = "Défi patient"
-        verbose_name_plural = "Défis patients"
-    
-    def __str__(self):
-        return f"{self.patient.user.nom} - {self.nom}"
-
-
 # ==================== MODÈLES POUR LA TRACABILITÉ ====================
 
 class HistoriqueAction(models.Model):
