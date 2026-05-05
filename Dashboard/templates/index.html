@@ -11166,15 +11166,16 @@ document.addEventListener("DOMContentLoaded", function() {
           'footer.description': 'منصة علاج وظيفي رقمية لمتابعة ما بعد كسر الرسغ.',
           'footer.nav': 'التنقل',
           'footer.social': 'شبكات التواصل',
-          'footer.rights': 'Tous droits réservés'
+          'footer.rights': 'جميع الحقوق محفوظة'
         }
       };
       
       // Fonction pour changer la langue
       function changeLanguage(lang) {
-        if (!translations[lang] || lang === currentLang) return;
+        if (!translations[lang]) return;
         
         currentLang = lang;
+        localStorage.setItem('smartwrist_lang', lang);
         
         // Mettre à jour l'attribut lang du HTML
         document.documentElement.lang = lang;
@@ -11252,9 +11253,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       });
       
-      changeLanguage('fr');
+      const savedLang = localStorage.getItem('smartwrist_lang');
+      const initialLang = translations[savedLang] ? savedLang : 'fr';
+      changeLanguage(initialLang);
     
 });
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const items = document.querySelectorAll("#about-platform .reveal-item");
