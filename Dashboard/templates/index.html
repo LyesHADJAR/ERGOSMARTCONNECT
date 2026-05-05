@@ -8671,8 +8671,9 @@ body[dir="rtl"] .thumb-icon {
   padding: 26px 22px;
   height: 100%;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to avoid clipping focus outlines */
   backdrop-filter: blur(6px);
+  z-index: 1; /* Establish stacking context */
 }
 
 .contact-card::before{
@@ -8682,6 +8683,8 @@ body[dir="rtl"] .thumb-icon {
   background: radial-gradient(circle at 20% 10%, rgba(46,139,87,0.12), transparent 55%);
   opacity: .7;
   pointer-events:none;
+  z-index: -1; /* Push behind the content */
+  border-radius: inherit;
 }
 
 .contact-card-title{
@@ -8690,7 +8693,8 @@ body[dir="rtl"] .thumb-icon {
   color: #0f172a;
   margin: 0 0 6px 0;
   position: relative;
-  z-index: 1;
+  z-index: 2; /* Ensure it's above background */
+  pointer-events: auto;
 }
 
 .contact-card-subtitle{
@@ -8706,7 +8710,7 @@ body[dir="rtl"] .thumb-icon {
   display: grid;
   gap: 12px;
   position: relative;
-  z-index: 1;
+  z-index: 2; /* Increased z-index to be clickable */
 }
 
 .info-item{
@@ -8718,6 +8722,9 @@ body[dir="rtl"] .thumb-icon {
   border: 1px solid rgba(46,139,87,0.12);
   background: #fff;
   transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+  z-index: 3;
+  pointer-events: auto; /* Ensure clickable */
 }
 
 .info-item:hover{
